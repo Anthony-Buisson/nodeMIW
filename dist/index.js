@@ -110,6 +110,18 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 
 /***/ }),
 
+/***/ "./src/db/product.js":
+/*!***************************!*\
+  !*** ./src/db/product.js ***!
+  \***************************/
+/*! exports provided: productModel */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"productModel\", function() { return productModel; });\n/* harmony import */ var mongoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mongoose */ \"mongoose\");\n/* harmony import */ var mongoose__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mongoose__WEBPACK_IMPORTED_MODULE_0__);\n\r\n\r\nconst productSchema = new mongoose__WEBPACK_IMPORTED_MODULE_0___default.a.Schema({\r\n    _id: String,\r\n    name: String,\r\n    brand: String,\r\n    bar_code: Number,\r\n    grade: Number,\r\n    pictures: [Array],\r\n    quantity: [String],\r\n    ingredients: [Object],\r\n});\r\n\r\nconst productModel = mongoose__WEBPACK_IMPORTED_MODULE_0___default.a.model('product',\r\n    productSchema, 'products');\n\n//# sourceURL=webpack:///./src/db/product.js?");
+
+/***/ }),
+
 /***/ "./src/index.js":
 /*!**********************!*\
   !*** ./src/index.js ***!
@@ -130,7 +142,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var expr
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ __webpack_exports__[\"default\"] = ((app) => {\r\n    app.get('/', () => {\r\n        console.log('access /');\r\n    })\r\n});\n\n//# sourceURL=webpack:///./src/routes/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _db_product__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../db/product */ \"./src/db/product.js\");\n\r\n\r\n/* harmony default export */ __webpack_exports__[\"default\"] = ((app) => {\r\n    app.get('/', async(req, res) => {\r\n        try {\r\n            const products = await _db_product__WEBPACK_IMPORTED_MODULE_0__[\"productModel\"].find();\r\n            res.status(200).json(products);\r\n        }\r\n        catch (err) {\r\n            return res.status(500).json({\r\n                'error': err,\r\n                'message': 'Error lors de la requête'\r\n            });\r\n        }\r\n    });\r\n\r\n    app.get('/product/:bar_code', async(req, res) => {\r\n        const barCode = req.params.bar_code;\r\n\r\n        try {\r\n            const product = await _db_product__WEBPACK_IMPORTED_MODULE_0__[\"productModel\"].findOne({ bar_code: barCode });\r\n            res.status(200).json(product);\r\n        }\r\n        catch (err) {\r\n            return res.status(500).json({\r\n                'error': true,\r\n                'message': 'Error lors de la requête'\r\n            });\r\n        }\r\n    });\r\n});\n\n//# sourceURL=webpack:///./src/routes/index.js?");
 
 /***/ }),
 
