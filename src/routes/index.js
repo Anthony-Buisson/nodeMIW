@@ -28,4 +28,46 @@ export default (app) => {
             });
         }
     });
+
+    app.post('/product', async(req, res) => {
+        try {
+            const {
+                name,
+                brand,
+                bar_code,
+                grade,
+                quantity,
+                pictures,
+                ingredients
+            } = req.body;
+
+            const request = new productModel({
+                name,
+                brand,
+                bar_code,
+                grade,
+                quantity,
+                pictures,
+                ingredients
+            });
+
+            const inserted = await request.save();
+
+            if(inserted && inserted._id){
+                return await res.json(inserted);
+            }else{
+                return res.status(500).json({
+                    status: 'fail',
+                    message: 'Le produit n\'a pas pu être inséré'
+                });
+            }
+        }
+        catch (err) {
+            console.log(err.message);
+            return res.status(500).json({
+                'error': true,
+                'message': 'Error lors de la requête'
+            });
+        }
+    });
 }
