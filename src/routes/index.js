@@ -16,7 +16,7 @@ export default (app) => {
     });
 
     /**
-     * Get one product
+     * Get a product
      */
     app.get('/product/:bar_code', async(req, res) => {
         const barCode = req.params.bar_code;
@@ -78,6 +78,9 @@ export default (app) => {
         }
     });
 
+    /**
+     * Create a comment
+     */
     app.post('/comment/:food_code', async(req, res) => {
         try {
             const food_code = req.params.food_code;
@@ -124,6 +127,9 @@ export default (app) => {
         }
     });
 
+    /**
+     * Get a comment
+     */
     app.get('/comment/:_id', async(req, res) => {
         const comment_id = req.params._id;
 
