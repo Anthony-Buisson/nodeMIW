@@ -1,4 +1,5 @@
 import { productModel } from '../db/product';
+import { commentModel } from '../db/comment';
 
 export default (app) => {
     app.get('/', async(req, res) => {
@@ -64,6 +65,82 @@ export default (app) => {
         }
         catch (err) {
             console.log(err.message);
+            return res.status(500).json({
+                'error': true,
+                'message': 'Error lors de la requête'
+            });
+        }
+    });
+
+    app.post('/comment/:food_code', async(req, res) => {
+        try {
+            const food_code = req.params.food_code;
+            const produitExiste = await productModel.findOne({bar_code: food_code });
+            if(produitExiste == null){
+                return res.status(404).json({
+                    status: 'fail',
+                    message: 'Le produit concerné n\'a pas été trouvé'
+                });
+            }
+
+            const {
+                date,
+                title,
+                text,
+
+            } = req.body;
+
+            const request = new commentModel({
+                date,
+                title,
+                text,
+                food_code
+            });
+            console.log(request);
+
+            const inserted = await request.save();
+
+            if(inserted && inserted._id){
+                return await res.json(inserted);
+            }else{
+                return res.status(500).json({
+                    status: 'fail',
+                    message: 'Le commentaire n\'a pas pu être inséré'
+                });
+            }
+        }
+        catch (err) {
+            console.log(err.message);
+            return res.status(500).json({
+                'error': true,
+                'message': 'Error lors de la requête'
+            });
+        }
+    });
+
+    app.get('/comment/:_id', async(req, res) => {
+        const comment_id = req.params._id;
+
+        try {
+            const comment = await commentModel.findOne({ _id: comment_id });
+            res.status(200).json(comment);
+        }
+        catch (err) {
+            return res.status(500).json({
+                'error': true,
+                'message': 'Error lors de la requête'
+            });
+        }
+    });
+
+    app.get('/comments/:food_code', async(req, res) => {
+        const bar_code = req.params.food_code;
+
+        try {
+            const comments = await commentModel.find({ food_code: bar_code });
+            res.status(200).json(comments);
+        }
+        catch (err) {
             return res.status(500).json({
                 'error': true,
                 'message': 'Error lors de la requête'
