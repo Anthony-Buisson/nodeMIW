@@ -33,6 +33,9 @@ export default (app) => {
         }
     });
 
+    /**
+     * Create one product
+     */
     app.post('/product', async(req, res) => {
         try {
             const {
