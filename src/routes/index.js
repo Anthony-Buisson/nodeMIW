@@ -15,6 +15,9 @@ export default (app) => {
         }
     });
 
+    /**
+     * Get one product
+     */
     app.get('/product/:bar_code', async(req, res) => {
         const barCode = req.params.bar_code;
 
