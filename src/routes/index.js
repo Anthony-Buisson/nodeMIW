@@ -133,6 +133,9 @@ export default (app) => {
         }
     });
 
+    /**
+     * Get comments on a product
+     */
     app.get('/comments/:food_code', async(req, res) => {
         const bar_code = req.params.food_code;
 
