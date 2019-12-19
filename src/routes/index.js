@@ -85,6 +85,7 @@ export default (app) => {
         try {
             const food_code = req.params.food_code;
             const produitExiste = await productModel.findOne({bar_code: food_code });
+
             if(produitExiste == null){
                 return res.status(404).json({
                     status: 'fail',
@@ -92,21 +93,8 @@ export default (app) => {
                 });
             }
 
-            const {
-                date,
-                title,
-                text,
-
-            } = req.body;
-
-            const request = new commentModel({
-                date,
-                title,
-                text,
-                food_code
-            });
-            console.log(request);
-
+            const { date, title, text } = req.body;
+            const request = new commentModel({date, title, text, food_code});
             const inserted = await request.save();
 
             if(inserted && inserted._id){
